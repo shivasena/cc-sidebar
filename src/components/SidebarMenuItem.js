@@ -48,7 +48,7 @@ export default function SidebarMenuItem({ menuItem, props, location }) {
   return (
     <>
       <div
-        className="flex items-center justify-between gap-2 font-medium leading-7 p-2 hover:bg-cc-red/5 group"
+        className="flex items-center justify-between gap-2 font-medium leading-7 p-2 transition duration-300 ease-in-out hover:bg-cc-red/5 group"
         {...props}
       >
         {location.pathname?.slice(0, -1) === menuItem.link ? (
