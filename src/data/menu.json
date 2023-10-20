@@ -112,24 +112,24 @@
             {
               "id": "11_2_1",
               "label": "Third Level Application for Campus Transfer",
-              "link": "/department/admissions/application-campus-transfer"
+              "link": "/department/admissions/application-campus-transfer/another"
             },
             {
               "id": "11_2_2",
               "label": "Third Level Application for Institution Transfer",
-              "link": "/department/admissions/application-institution-transfer"
+              "link": "/department/admissions/application-institution-transfer/another"
             },
             {
               "id": "11_2_3",
               "label": "Third Level Application for Re-Admission",
-              "link": "/department/admissions/application-re-admission"
+              "link": "/department/admissions/application-re-admission/another"
             }
           ]
         },
         {
           "id": "11_3",
           "label": "Application for Institution Transfer",
-          "link": "/department/admissions/application-institution-transfer"
+          "link": "/department/admissions/application-institution-transfer/another"
         },
         {
           "id": "11_4",

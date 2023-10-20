@@ -22,11 +22,20 @@ export default function SidebarMenuItem({ menuItem, props, location }) {
         setIsSubmenuOpen(true);
       }
     }
-  }, [menuItem.submenu, location.pathname]);
+  }, [menuItem.submenu, location.pathname, menuItem.link]); // added menuItem.link here
 
   const toggleSubmenu = () => {
     setIsSubmenuOpen(!isSubmenuOpen);
   };
+
+  const handleKeyDown = (event) => {
+    // For 'Enter' key or 'Space' key
+    if (event.keyCode === 13 || event.keyCode === 32) {
+      toggleSubmenu();
+      event.preventDefault(); // Prevent the default action to stop scrolling when pressing space
+    }
+  };
+
   return (
     <>
       <div
@@ -43,7 +52,10 @@ export default function SidebarMenuItem({ menuItem, props, location }) {
 
         {menuItem.submenu?.length > 0 ? (
           <div
+            role="button"
+            tabIndex={0}
             onClick={menuItem.submenu?.length > 0 ? toggleSubmenu : undefined}
+            onKeyDown={handleKeyDown}
           >
             {isSubmenuOpen ? (
               <FiChevronDown className="w-6 h-6 group-hover:bg-white p-1 rounded-sm" />

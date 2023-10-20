@@ -1,23 +1,45 @@
 const fs = require("fs");
 const path = require("path");
 
+const extractUniqueLinks = (menuItems, linkArray) => {
+  menuItems.forEach((item) => {
+    linkArray.push({ link: item.link, label: item.label });
+    if (item.submenu && item.submenu.length > 0) {
+      extractUniqueLinks(item.submenu, linkArray);
+    }
+  });
+};
+
 exports.createPages = async ({ actions }) => {
   const { createPage } = actions;
 
-  // Read the JSON file
-  const data = JSON.parse(
-    fs.readFileSync(path.resolve(__dirname, "./src/data/pages.json"))
+  // Read the JSON file (Assuming it's named menu.json)
+  const rawData = fs.readFileSync(
+    path.resolve(__dirname, "./src/data/menu.json")
   );
+  const data = JSON.parse(rawData);
 
-  // Loop through each page in the JSON and create a corresponding Gatsby page
-  data.pages.forEach((page) => {
-    createPage({
-      path: page.link,
-      component: path.resolve(__dirname, "./src/templates/pageTemplate.js"), // Point to the template you'd use for these pages
-      context: {
-        label: page.label,
-        link: page.link,
-      },
-    });
+  // Use an array to hold the unique link and label pairs
+  const linkArray = [];
+
+  // Extract unique links and labels
+  extractUniqueLinks(data.menu_items, linkArray);
+
+  // Create a set to hold unique links
+  const uniqueLinksSet = new Set();
+
+  // Create pages with unique links and labels
+  linkArray.forEach((item) => {
+    if (!uniqueLinksSet.has(item.link)) {
+      uniqueLinksSet.add(item.link);
+      createPage({
+        path: item.link,
+        component: path.resolve(__dirname, "./src/templates/pageTemplate.js"),
+        context: {
+          link: item.link,
+          label: item.label,
+        },
+      });
+    }
   });
 };
