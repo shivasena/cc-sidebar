@@ -7,22 +7,31 @@ export default function SidebarMenuItem({ menuItem, props, location }) {
 
   // Check if current pathname is in the submenu
   useEffect(() => {
+    const checkSubmenu = (submenu) => {
+      if (!submenu) return false;
+
+      for (let item of submenu) {
+        if (location.pathname?.slice(0, -1) === item.link) {
+          return true;
+        }
+        if (checkSubmenu(item.submenu)) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+
     if (menuItem.submenu) {
-      // Check if current path is the same as menuItem link
       const isCurrentPathMenuItem =
         location.pathname?.slice(0, -1) === menuItem.link;
+      const isCurrentPathInSubmenu = checkSubmenu(menuItem.submenu);
 
-      // Check if current path is in the submenu
-      const isCurrentPathInSubmenu = menuItem.submenu.some(
-        (submenuItem) => location.pathname?.slice(0, -1) === submenuItem.link
-      );
-
-      // Open submenu if either condition is true
       if (isCurrentPathInSubmenu || isCurrentPathMenuItem) {
         setIsSubmenuOpen(true);
       }
     }
-  }, [menuItem.submenu, location.pathname, menuItem.link]); // added menuItem.link here
+  }, [menuItem.submenu, location.pathname, menuItem.link]);
 
   const toggleSubmenu = () => {
     setIsSubmenuOpen(!isSubmenuOpen);
