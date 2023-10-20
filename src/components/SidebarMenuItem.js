@@ -1,37 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "gatsby";
 import { FiChevronLeft, FiChevronDown } from "react-icons/fi";
 
 export default function SidebarMenuItem({ menuItem, props, location }) {
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
 
-  // Check if current pathname is in the submenu
-  useEffect(() => {
-    const checkSubmenu = (submenu) => {
-      if (!submenu) return false;
+  const slicedPathname = useMemo(
+    () => location.pathname?.slice(0, -1),
+    [location.pathname]
+  );
 
-      for (let item of submenu) {
-        if (location.pathname?.slice(0, -1) === item.link) {
-          return true;
-        }
-        if (checkSubmenu(item.submenu)) {
-          return true;
-        }
+  const checkSubmenu = (submenu, path) => {
+    if (!submenu) return false;
+
+    for (let item of submenu) {
+      if (path === item.link) {
+        return true;
       }
+      if (checkSubmenu(item.submenu, path)) {
+        return true;
+      }
+    }
+    return false;
+  };
 
-      return false;
-    };
-
+  useEffect(() => {
     if (menuItem.submenu) {
-      const isCurrentPathMenuItem =
-        location.pathname?.slice(0, -1) === menuItem.link;
-      const isCurrentPathInSubmenu = checkSubmenu(menuItem.submenu);
+      const isCurrentPathMenuItem = slicedPathname === menuItem.link;
+      const isCurrentPathInSubmenu = checkSubmenu(
+        menuItem.submenu,
+        slicedPathname
+      );
 
       if (isCurrentPathInSubmenu || isCurrentPathMenuItem) {
         setIsSubmenuOpen(true);
       }
     }
-  }, [menuItem.submenu, location.pathname, menuItem.link]);
+  }, [menuItem.submenu, slicedPathname, menuItem.link]);
 
   const toggleSubmenu = () => {
     setIsSubmenuOpen(!isSubmenuOpen);
