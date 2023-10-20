@@ -67,9 +67,9 @@ export default function SidebarMenuItem({ menuItem, props, location }) {
             onKeyDown={handleKeyDown}
           >
             {isSubmenuOpen ? (
-              <FiChevronDown className="w-6 h-6 group-hover:bg-white p-1 rounded-sm" />
+              <FiChevronDown className="w-6 h-6 group-hover:bg-white p-1 rounded-sm text-cc-red" />
             ) : (
-              <FiChevronLeft className="w-6 h-6 group-hover:bg-white p-1 rounded-sm" />
+              <FiChevronLeft className="w-6 h-6 group-hover:bg-white p-1 rounded-sm text-cc-red" />
             )}
           </div>
         ) : null}
